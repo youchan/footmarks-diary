@@ -44,7 +44,7 @@ class App < Sinatra::Base
       # Force to debug mode in development mode
       # Debug mode automatically sets
       # expand = true, digest = false, manifest = false
-      config.debug       = true if development?
+      #config.debug       = true if development?
     end
   end
 
