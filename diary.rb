@@ -61,7 +61,7 @@ class App < Sinatra::Base
       title
     end.map do |chunk|
       {title: chunk[0], content: chunk[1].drop(1).join("\n")}
-    end
+    end.tap{p _1}
   end
 
   get "/assets/*" do
@@ -92,7 +92,7 @@ class App < Sinatra::Base
 
       filename = "#{settings.root}/data/#{date}.md"
       entry = split_content(File.read(filename)).find{|entry| entry[:title] == @title}
-      raise unless entry
+      redirect "/#{date}" unless entry
       @contents = [{ date: date, entries: [entry] }]
     rescue
       @contents = []
@@ -102,7 +102,7 @@ class App < Sinatra::Base
     haml :index
   end
 
-  get /\/(\d{4}-\d{2}-\d{2})/ do
+  get /\/(\d{4}-\d{2}-\d{2})\/?/ do
     begin
       date = params[:captures].first
       filename = "#{settings.root}/data/#{date}.md"
